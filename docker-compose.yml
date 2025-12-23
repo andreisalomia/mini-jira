@@ -21,8 +21,6 @@ services:
     container_name: minijira-backend
     env_file:
       - .env
-    ports:
-      - "5000:5000"
     depends_on:
       postgres:
         condition: service_healthy
@@ -31,16 +29,27 @@ services:
       - ./backend:/app
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL}
     container_name: minijira-frontend
-    environment:
-      - VITE_API_URL=${VITE_API_URL}
-    ports:
-      - "3000:3000"
     depends_on:
       - backend
     volumes:
       - ./frontend/src:/app/src
+    
+  nginx:
+    image: nginx:alpine
+    container_name: minijira-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+      - frontend
 
 volumes:
   postgres-data:
