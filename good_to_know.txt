@@ -2,3 +2,5 @@ It is required that your private key files are NOT accessible by others.
 This private key will be ignored.
 
 Explorer -> File properties -> Security -> Advanced -> Delete permission entries -> Add just the user
+
+ssh -i minijira-week2-key.pem ubuntu@<PUBLIC_IP>
