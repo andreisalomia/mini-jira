@@ -1,7 +1,3 @@
-"""
-Seed the database with test data
-Run with: python seed.py
-"""
 from app import create_app
 from app.extensions import db
 from app.models import User, Project, Issue, Comment
@@ -10,7 +6,15 @@ from werkzeug.security import generate_password_hash
 app = create_app()
 
 with app.app_context():
-    # Clear existing data
+    # Check if data already exists
+    if User.query.count() > 0:
+        print("Database already has data. Skipping seed.")
+        print(f"Found {User.query.count()} users")
+        print(f"Found {Project.query.count()} projects")
+        print(f"Found {Issue.query.count()} issues")
+        exit(0)
+    
+    # Clear existing data (only runs if count was 0, but just in case)
     print("Clearing existing data...")
     Comment.query.delete()
     Issue.query.delete()
