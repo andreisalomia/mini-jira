@@ -18,11 +18,10 @@ This project is a hands-on learning environment to progressively apply DevOps pr
 - Exposed services using cloud firewalls (Security Groups)  
 - Encountered issues with ssh-key permissions
 - Resolved frontend prod-only failures (build-time env vars, dev proxy assumptions)
-- TODO in step 3: get rid of the vite proxy
 
 ## Step 3 — Reverse Proxy
 
-- Added NGINX as reverse proxy for single entry point (port 80)
+- Went back to local, added NGINX as reverse proxy for single entry point (port 80)
 - Removed Vite dev proxy - NGINX now handles all routing
 - Configured location blocks to route `/` to frontend, `/api` to backend
 - Fixed environment variable issues (build-time vs runtime) with Docker build args
@@ -34,5 +33,8 @@ This project is a hands-on learning environment to progressively apply DevOps pr
 - Configured automatic HTTP to HTTPS redirect on port 443
 - Verified statelessness: backend/frontend restarts don't break user sessions (JWT-based auth)
 
-### Step 5
+### Step 5 - Terraform
 
+- Defined entire infrastructure in Terraform (networks, volumes, containers, images)
+- Automated image building within Terraform (no manual docker-compose build)
+- Created reusable variable configuration (terraform.tfvars) for environment-specific values
