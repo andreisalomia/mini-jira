@@ -1,6 +1,7 @@
 # DevOps Learning Project
 
 ## Purpose
+
 This project is a hands-on learning environment to progressively apply DevOps principles by evolving a simple application from local development to production-grade infrastructure.
 
 ## Step 1 - Simple Local Development & Docker
@@ -15,7 +16,7 @@ This project is a hands-on learning environment to progressively apply DevOps pr
 - Deployed the containerized app to a single AWS EC2 VM via SSH  
 - Manually installed and configured Docker on a fresh Linux server  
 - Exposed services using cloud firewalls (Security Groups)  
-- Encountered issues with ssh-key permissions 
+- Encountered issues with ssh-key permissions
 - Resolved frontend prod-only failures (build-time env vars, dev proxy assumptions)
 - TODO in step 3: get rid of the vite proxy
 
@@ -34,3 +35,4 @@ This project is a hands-on learning environment to progressively apply DevOps pr
 - Verified statelessness: backend/frontend restarts don't break user sessions (JWT-based auth)
 
 ### Step 5
+

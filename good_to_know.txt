@@ -12,3 +12,5 @@ De ce avem nevoie de NGINX?
 -fara probleme de cors
 
 Reverse proxy: hides MY servers
+
+terraform - init - plan - apply - destroy - show
