@@ -6,7 +6,10 @@ terraform {
   }
 }
 
-provider "docker" {}
+provider "docker" {
+  host = "ssh://ubuntu@51.20.4.65"
+  ssh_opts = ["-i", "${path.module}/../minijira-key.pem"]
+}
 
 # Network
 resource "docker_network" "app_network" {
@@ -37,6 +40,15 @@ resource "docker_image" "frontend" {
     build_args = {
       VITE_API_URL = var.vite_api_url
     }
+  }
+}
+
+resource "docker_image" "nginx" {
+  name = "minijira-nginx:latest"
+
+  build {
+    context    = abspath("${path.module}/../nginx")
+    dockerfile = "Dockerfile"
   }
 }
 
@@ -106,7 +118,7 @@ resource "docker_container" "frontend" {
 # NGINX
 resource "docker_container" "nginx" {
   name  = "minijira-nginx"
-  image = "nginx:alpine"
+  image = docker_image.nginx.name
   
   networks_advanced {
     name = docker_network.app_network.name
@@ -116,23 +128,20 @@ resource "docker_container" "nginx" {
     internal = 80
     external = 80
   }
-  
+
   ports {
     internal = 443
     external = 443
   }
-  
+
   volumes {
-    host_path = abspath("${path.module}/../nginx/nginx.conf")
-    container_path = "/etc/nginx/nginx.conf"
-    read_only = true
-  }
-  
-  volumes {
-    host_path = abspath("${path.module}/../certs")
+    host_path = "/opt/minijira/certs"
     container_path = "/etc/nginx/certs"
     read_only = true
   }
-  
-  depends_on = [docker_container.backend, docker_container.frontend]
+
+  depends_on = [
+    docker_container.backend,
+    docker_container.frontend
+  ]
 }

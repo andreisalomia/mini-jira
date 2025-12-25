@@ -3,7 +3,7 @@ This private key will be ignored.
 
 Explorer -> File properties -> Security -> Advanced -> Delete permission entries -> Add just the user
 
-ssh -i minijira-week2-key.pem ubuntu@<PUBLIC_IP>
+ssh -i minijira-key.pem ubuntu@<PUBLIC_IP>
 
 De ce avem nevoie de NGINX?
 -un singur port expus

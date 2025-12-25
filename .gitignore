@@ -1,3 +1,4 @@
 .env
 minijira-key.pem
 /certs
+.env.ec2
