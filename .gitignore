@@ -3,3 +3,6 @@ minijira-key.pem
 /certs
 .env.ec2
 github_token.txt
+aws_configure.txt
+security-group.json
+ec2-details.json
