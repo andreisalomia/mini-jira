@@ -73,8 +73,6 @@ jobs:
         with:
           context: ./frontend
           push: true
-          build-args: |
-            VITE_API_URL=http://PLACEHOLDER
           tags: |
             ${{ env.REGISTRY }}/${{ env.OWNER }}/minijira-frontend:${{ steps.vars.outputs.sha_short }}
             ${{ env.REGISTRY }}/${{ env.OWNER }}/minijira-frontend:main
