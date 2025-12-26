@@ -2,3 +2,4 @@
 minijira-key.pem
 /certs
 .env.ec2
+github_token.txt
