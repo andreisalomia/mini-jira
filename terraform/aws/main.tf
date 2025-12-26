@@ -32,7 +32,7 @@ resource "aws_security_group" "minijira" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["86.127.156.120/32"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # HTTP
