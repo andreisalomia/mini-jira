@@ -77,10 +77,15 @@ resource "aws_security_group" "minijira" {
 
 resource "aws_instance" "minijira" {
   ami           = "ami-01fd6fa49060e89a6"
-  instance_type = "t3.micro"
+  instance_type = "t3.small"
   subnet_id     = data.aws_subnet.existing.id
   
   vpc_security_group_ids = [aws_security_group.minijira.id]
+
+  root_block_device {
+    volume_size = 16
+    volume_type = "gp2"
+  }
 
   tags = {
     Name = "ServerMiniJira"
