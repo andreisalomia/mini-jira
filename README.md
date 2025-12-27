@@ -39,6 +39,9 @@ This project is a hands-on learning environment to progressively apply DevOps pr
 - Automated image building within Terraform (no manual docker-compose build)
 - Created reusable variable configuration (terraform.tfvars) for environment-specific values
 
-### Step 6 - CI/CD with GitHub Actions
+### Step 6 - CI/CD with GitHub Actions & Terraform AWS
 
-- 
+- Implemented CI pipeline with simple automated testing and Docker image builds
+- Published images to GitHub Container Registry with immutable SHA tags
+- Built CD pipeline for automated SSH deployment to EC2
+- Imported existing EC2 infrastructure into Terraform state

@@ -6,8 +6,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
@@ -17,38 +15,30 @@ services:
       retries: 5
 
   backend:
-    build: ./backend
+    image: minijira-backend:current
     container_name: minijira-backend
-    env_file:
-      - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@minijira-postgres:5432/${POSTGRES_DB}
+      SECRET_KEY: ${SECRET_KEY}
+      FLASK_ENV: production
+      CORS_ORIGINS: https://51.20.4.65
     depends_on:
       postgres:
         condition: service_healthy
-    command: sh -c "flask db upgrade && python seed.py && python run.py"
-    volumes:
-      - ./backend:/app
+    command: sh -c "./wait_for_db.sh && flask db upgrade && python seed.py && python run.py"
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        VITE_API_URL: ${VITE_API_URL}
+    image: minijira-frontend:current
     container_name: minijira-frontend
-    depends_on:
-      - backend
-    volumes:
-      - ./frontend/src:/app/src
-    
+
   nginx:
-    image: nginx:alpine
+    image: minijira-nginx:current
     container_name: minijira-nginx
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./certs:/etc/nginx/certs:ro
+      - /opt/minijira/certs:/etc/nginx/certs:ro
     depends_on:
       - backend
       - frontend
