@@ -45,3 +45,13 @@ This project is a hands-on learning environment to progressively apply DevOps pr
 - Published images to GitHub Container Registry with immutable SHA tags
 - Built CD pipeline for automated SSH deployment to EC2
 - Imported existing EC2 infrastructure into Terraform state
+
+### Step 7 — Kubernetes with K3s
+
+- Migrated from Docker Compose to Kubernetes (K3s)
+- Upgraded EC2 instance from t3.micro to t3.small as k3s requires more resources
+- Implemented Kubernetes deployments, services, and persistent volumes
+- Used Traefik Ingress for HTTP/HTTPS routing (ports 80/443) and removed NGINX
+- Automated deployments with deploy.sh script
+- CI/CD pipeline pushes images to ghcr.io, deploys via kubectl set image
+- Maintained stateless architecture with external secrets and PVCs
