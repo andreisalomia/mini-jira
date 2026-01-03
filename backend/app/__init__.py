@@ -1,8 +1,9 @@
-from flask import Flask, jsonify, request, g
+from flask import Flask, jsonify, request, g, Response
 from flask_cors import CORS
 from .config import Config
 from .extensions import db, migrate
 from prometheus_flask_exporter import PrometheusMetrics
+from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 from pythonjsonlogger import jsonlogger
 import logging
 import sys
@@ -31,6 +32,11 @@ def create_app(config_class=Config):
     
     # Setup Prometheus metrics
     metrics = PrometheusMetrics(app)
+    
+    @app.route('/metrics')
+    def metrics_export():
+        """Expose Prometheus metrics explicitly (helps when default route is missing)."""
+        return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
     
     @app.before_request
     def attach_request_id():

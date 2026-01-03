@@ -7,30 +7,17 @@ data:
   prometheus.yml: |
     global:
       scrape_interval: 15s
-      evaluation_interval: 15s
     
     scrape_configs:
+    - job_name: 'prometheus'
+      static_configs:
+      - targets: ['localhost:9090']
+    
     - job_name: 'backend'
-      kubernetes_sd_configs:
-      - role: pod
-        namespaces:
-          names:
-          - minijira
-      relabel_configs:
-      - source_labels: [__meta_kubernetes_pod_label_app]
-        action: keep
-        regex: backend
-      - source_labels: [__meta_kubernetes_pod_ip]
-        action: replace
-        target_label: __address__
-        replacement: $1:5000
-      - source_labels: [__meta_kubernetes_pod_name]
-        action: replace
-        target_label: pod
-      metric_relabel_configs:
-      - source_labels: [__name__]
-        regex: 'flask_.*'
-        action: keep
+      static_configs:
+      - targets: ['minijira-backend.minijira.svc.cluster.local:5000']
+        labels:
+          app: 'backend'
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -49,23 +36,19 @@ spec:
     spec:
       containers:
       - name: prometheus
-        image: prom/prometheus:v2.45.0
+        image: prom/prometheus:latest
+        args:
+        - '--config.file=/etc/prometheus/prometheus.yml'
+        - '--storage.tsdb.path=/prometheus'
         ports:
         - containerPort: 9090
         volumeMounts:
         - name: config
           mountPath: /etc/prometheus
-        - name: storage
-          mountPath: /prometheus
-        args:
-        - '--config.file=/etc/prometheus/prometheus.yml'
-        - '--storage.tsdb.path=/prometheus'
       volumes:
       - name: config
         configMap:
           name: prometheus-config
-      - name: storage
-        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
@@ -73,8 +56,10 @@ metadata:
   name: prometheus
   namespace: monitoring
 spec:
+  type: NodePort
+  selector:
+    app: prometheus
   ports:
   - port: 9090
     targetPort: 9090
-  selector:
-    app: prometheus
+    nodePort: 30090
