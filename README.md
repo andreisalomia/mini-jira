@@ -56,6 +56,10 @@ This project is a hands-on learning environment to progressively apply DevOps pr
 - CI/CD pipeline pushes images to ghcr.io, deploys via kubectl set image
 - Maintained stateless architecture with external secrets and PVCs
 
-### Step 8 — Monitoring & Logging
+### Step 8 — Observability
 
-
+- Implemented structured JSON logging with python-json-logger for better log parsing
+- Deployed Prometheus and Grafana as Kubernetes deployments in monitoring namespace
+- Integrated prometheus-flask-exporter to expose backend /metrics endpoint
+- Configured Prometheus to scrape backend metrics
+- Created chaos endpoints (/api/v1/chaos/slow, /error) to validate monitoring
