@@ -55,3 +55,7 @@ This project is a hands-on learning environment to progressively apply DevOps pr
 - Automated deployments with deploy.sh script
 - CI/CD pipeline pushes images to ghcr.io, deploys via kubectl set image
 - Maintained stateless architecture with external secrets and PVCs
+
+### Step 8 — Monitoring & Logging
+
+
